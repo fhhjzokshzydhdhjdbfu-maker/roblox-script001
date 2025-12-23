@@ -1,0 +1,5 @@
+-- TRUE ROBLOX SHIFT LOCK (ROTATE CHARACTER WITH CAMERA)
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("Ru
