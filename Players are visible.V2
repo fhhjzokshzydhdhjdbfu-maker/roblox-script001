@@ -1,0 +1,77 @@
+-- สร้าง UI
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.StarterGui
+
+local Frame = Instance.new("Frame")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(1, 0, 1, 0)
+Frame.BackgroundTransparency = 0.5
+Frame.BackgroundColor3 = Color3.new(0, 0, 0)
+
+local ButtonClose = Instance.new("ImageButton")
+ButtonClose.Parent = Frame
+ButtonClose.Size = UDim2.new(0.1, 0, 0.1, 0)
+ButtonClose.Position = UDim2.new(0.9, 0, 0.1, 0)
+ButtonClose.Image = "rbxassetid://3926303889"
+
+local ButtonToggle = Instance.new("TextButton")
+ButtonToggle.Parent = Frame
+ButtonToggle.Size = UDim2.new(0.2, 0, 0.1, 0)
+ButtonToggle.Position = UDim2.new(0.4, 0, 0.45, 0)
+ButtonToggle.Text = "ปิด"
+
+local ButtonSeeInvisible = Instance.new("TextButton")
+ButtonSeeInvisible.Parent = Frame
+ButtonSeeInvisible.Size = UDim2.new(0.2, 0, 0.1, 0)
+ButtonSeeInvisible.Position = UDim2.new(0.4, 0, 0.55, 0)
+ButtonSeeInvisible.Text = "เห็นผู้เล่นล่องหน"
+
+local isOpen = true
+local seeInvisible = false
+
+ButtonClose.MouseButton1Click:Connect(function()
+    ScreenGui.Enabled = not ScreenGui.Enabled
+end)
+
+ButtonToggle.MouseButton1Click:Connect(function()
+    if isOpen then
+        Frame.BackgroundTransparency = 1
+        ButtonToggle.Text = "เปิด"
+        isOpen = false
+    else
+        Frame.BackgroundTransparency = 0.5
+        ButtonToggle.Text = "ปิด"
+        isOpen = true
+    end
+end)
+
+ButtonSeeInvisible.MouseButton1Click:Connect(function()
+    seeInvisible = not seeInvisible
+    if seeInvisible then
+        ButtonSeeInvisible.Text = "ไม่เห็นผู้เล่นล่องหน"
+    else
+        ButtonSeeInvisible.Text = "เห็นผู้เล่นล่องหน"
+    end
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Character then
+            if seeInvisible then
+                player.Character.Humanoid.Transparency = 0
+            else
+                player.Character.Humanoid.Transparency = 1
+            end
+        end
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Character then
+            if not seeInvisible then
+                player.Character.Humanoid.Transparency = 1
+            end
+        end
+    end
+end)
